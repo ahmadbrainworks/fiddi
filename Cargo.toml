@@ -1,0 +1,25 @@
+[package]
+name = "fiddi"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.104", features = ["derive"] }
+serde_json = "1.0.48"
+tokio = { version = "1", features = ["full"] }
+colorful = "*"
+colored = "2.0.0"
+clap = { version = "3.1.6", features = ["derive"] }
+reqwest = { version = "0.11", features = ["json"] } # reqwest with JSON parsing support
+serde_derive = "*"
+serde_with = "*"
+sled = "*"
+actix-web = "4.0.1"
+futures = "*"
+termion = "1.5.5"
+simplelog = { version = "*", features = ["paris"] }
+log = "*"
+#rust-crypto = "0.2"
+throbber = "*"
