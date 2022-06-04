@@ -9,7 +9,8 @@ Fiddi is a command line tool that does the boring and complex process of checkin
 	   cd fiddi
 	   cargo build
 	   cd target/release
-	   ```
+	   
+	 ```
 	   and execute `fiddi` from there.
 
  - Install from the release branch.
