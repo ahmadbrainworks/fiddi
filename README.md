@@ -15,10 +15,10 @@ Fiddi is a command line tool that does the boring and complex process of checkin
 
  - Install from the release branch.
  	 download a release file from the release branch
-	  ```
+	 ```
 	  tar -xvf fiddi-0.1.linux.tar.gz
       cd fiddi
-	  ```
+	 ```
 	  and execute `fiddi` from the folder.
    	
 
