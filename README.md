@@ -16,7 +16,7 @@ Fiddi is a command line tool that does the boring and complex process of checkin
  	 download a release file from the [release branch](https://github.com/ahmadbrainworks/fiddi/releases/) 
 	```
 	  tar -xvf fiddi-0.1.linux.tar.gz
-      cd fiddi
+      cd fiddi/bin
 	```
 	  and execute `fiddi` from the folder.
    	
