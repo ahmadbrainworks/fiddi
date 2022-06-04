@@ -7,7 +7,7 @@ Fiddi is a command line tool that does the boring and complex process of checkin
   	 ```
 	   git clone https://github.com/ahmadbrainworks/fiddi
 	   cd fiddi
-	   cargo build
+	   cargo build --release
 	   cd target/release
 	```
 	and execute `fiddi` from there.
