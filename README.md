@@ -26,8 +26,13 @@ Fiddi is a command line tool that does the boring and complex process of checkin
 
  ##### flags
  
+<<<<<<< HEAD
   `--block-number`", type: integer/string.
     specify a block number to start indexing with, and checking for transactions in that block, for latest block use "latest"  , e.g --block-number latest
+=======
+  `--block-number`, type: integer/string.
+    specify a block number to start indexing with, and checking for transactions in that block, for latest block use latest  , e.g --block-number latest
+>>>>>>> bbf65e32ed83b030b33d40ed5c0bb84202d1d23c
 
 -  `--rpc`, type: string. 
 	Your node RPC URL
@@ -40,7 +45,11 @@ Fiddi is a command line tool that does the boring and complex process of checkin
 	 Ip address for adding a list of addresses to the watchlist.
  
 
+<<<<<<< HEAD
 - `--webhook`, type: optional<string>.
+=======
+- `--webhook`, type: string.
+>>>>>>> bbf65e32ed83b030b33d40ed5c0bb84202d1d23c
 	  Your webhook endpoint for notification about incoming transactions. The endpoint must accept post request from the `fiddi`, the request is in JSON format that includes blocknumber, blockhash,sender address, receiver address and recipient address, value, and transaction hash.
 	  payload to be sent to your `webhook` address:
 	  ```
