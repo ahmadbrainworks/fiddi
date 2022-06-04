@@ -20,7 +20,9 @@ const MAX_SIZE: usize = 262_144; // max payload size is 256k
 
 // #[post("/api/new/address")]
 pub async fn new_address(mut payload: web::Payload) -> Result<HttpResponse, Error> {
-let tree = sled::open("./.fiddi/wallet-addresses").expect("Failed to open");
+let home_dir = dirs::home_dir().unwrap();
+let home_dir = home_dir.display();
+let tree = sled::open(format!("{home_dir}/.fiddi/wallet-addresses")).expect("Failed to open");
     // payload is a stream of Bytes objects
     let mut body = web::BytesMut::new();
     while let Some(chunk) = payload.next().await {
@@ -36,7 +38,6 @@ let tree = sled::open("./.fiddi/wallet-addresses").expect("Failed to open");
     let address = Arc::new(obj.address);
     let exists = tree.contains_key(format!("{}", address.clone()).as_bytes()).unwrap();
 if !exists{
-
     tree.insert(format!("{}", address.clone()), format!("{}", address.clone()).to_lowercase().as_bytes()).expect("can't do that");
     let obj = json!({"status" : "0", "address": format!("{}", address.clone()), "msg": "address was successfully added to watchlist"});
     Ok(HttpResponse::Ok().json(obj)) // <- send response

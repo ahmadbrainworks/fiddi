@@ -78,12 +78,18 @@ println!("{} {} {} {}", "Found", format!("{}",array.len()).blue(), "transactions
 info!("{} {} {} {}", "Found", format!("{}",array.len()), "transactions in block", format!("{:?}",i32::from_str_radix(current_block.trim_start_matches("0x"), 16).unwrap()));
   
 
-let tree = sled::open("./db/wallet-addresses").expect("Failed to open");
+let home_dir = dirs::home_dir().unwrap();
+let home_dir = home_dir.display();
+let tree = sled::open(format!("{home_dir}/.fiddi/wallet-addresses")).expect("Failed to open");
 
 for i in 0..array.len() {
     if data[i]["value"] != "0x0" {
 let exists = tree.contains_key(&format!("{}",data[i]["to"]).replace('"', "").as_bytes()).expect("error error");
         if exists {
+            if webhook == "None" {
+                info!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
+                println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
+            }else{
             reqwest::Client::new()
             .post(format!("{}",webhook))
             .body(format!("{}",data[i]))
@@ -93,10 +99,10 @@ let exists = tree.contains_key(&format!("{}",data[i]["to"]).replace('"', "").as_
             .json::<serde_json::Value>() 
             .await
             .expect("failed to get payload");
-
+            
 info!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
 println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
-
+            }
         }
    
     }
@@ -156,13 +162,18 @@ let array: Vec<&str> = d.split("},{").collect();
 println!("{} {} {} {}", "Found", format!("{}",array.len()).blue(), "transactions in block".blue(), format!("{:?}",i32::from_str_radix(current_block.trim_start_matches("0x"), 16).unwrap()).blue());
 info!("{} {} {} {}", "Found", format!("{}",array.len()), "transactions in block", format!("{:?}",i32::from_str_radix(current_block.trim_start_matches("0x"), 16).unwrap()));
   
-
-let tree = sled::open("./.fiddi/wallet-addresses").expect("Failed to open");
+let home_dir = dirs::home_dir().unwrap();
+let home_dir = home_dir.display();
+let tree = sled::open(format!("{home_dir}/.fiddi/wallet-addresses")).expect("Failed to open");
 
 for i in 0..array.len() {
     if data[i]["value"] != "0x0" {
 let exists = tree.contains_key(&format!("{}",data[i]["to"]).replace('"', "").as_bytes()).expect("error error");
         if exists {
+            if webhook == "None" {
+                info!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
+                println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
+            }else{
             reqwest::Client::new()
             .post(format!("{}",webhook))
             .body(format!("{}",data[i]))
@@ -172,10 +183,10 @@ let exists = tree.contains_key(&format!("{}",data[i]["to"]).replace('"', "").as_
             .json::<serde_json::Value>() 
             .await
             .expect("failed to get payload");
-
+            
 info!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
 println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
-
+            }
         }
    
     }

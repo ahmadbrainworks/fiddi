@@ -3,10 +3,8 @@ use clap::Parser;
 use serde::{Deserialize, Serialize}; 
 use std::process;
 use actix_web::{web, App, HttpServer};
-use colored::Colorize;
-
-
-
+use colored::Colorize; 
+extern crate dirs;
 
 
 extern crate serde_json;
@@ -15,7 +13,7 @@ extern crate serde_json;
 #[clap(author, version, about, long_about = None)]
 struct Args {
     #[clap(short, long)]
-    block_number: i32,
+    block_number: String,
     #[clap(short, long)]
     port: u16,
     #[clap(short, long)]
@@ -23,7 +21,7 @@ struct Args {
     #[clap(short, long)]
     ip_address: String,
     #[clap(short, long)]
-    webhook: String,
+    webhook: Option<String>,
     #[clap(short, long)]
     keep_on: bool,
     #[clap(short, long)]
@@ -52,17 +50,20 @@ async fn main() {
 
     let args = Args::parse();
     let rpc = args.rpc;
+    let rpc =&rpc.to_string();
     let block_number = args.block_number;
+    let block_number =&block_number.to_string();
     let keep_on = args.keep_on;
     let http = args.http;
     let ip_address = args.ip_address;
     let port = args.port;
-    let webhook = args.webhook;
+    let webhook = format!("{:?}", args.webhook);
+    let webhook =String::from(webhook.to_string()).replace("Some(", "").replace(")", "").replace('"', "");
 
 
     tokio::join!(
         http_init(ip_address, port, http),
-        crawler(rpc, block_number, webhook,keep_on)
+        crawler(rpc, block_number, &webhook,keep_on)
     );
 
 
@@ -79,10 +80,19 @@ async fn http_init(ip_address: String, port: u16, http: bool) {
  }
 }
 
-async fn crawler(rpc: String, block_number: i32, webhook: String, keep_on: bool){
+async fn crawler(rpc: &str, block_number: &str, webhook: &str, keep_on: bool){
     if keep_on{
-    
-        block_fetch::run(format!("{}",rpc), block_number, webhook, keep_on).await;
+    if block_number.to_string() == "latest"{
+        let block_number:i32 = block_fetch::latest_block(rpc.to_string()).await;
+        block_fetch::run(format!("{}",rpc), block_number, webhook.to_string(), keep_on).await;
+        if !optimize::this(format!("{}",rpc)).await {
+            println!("{}", "The block number that you supplied is not valid".red());
+            
+
+        }
+        
+    }
+        block_fetch::run(format!("{}",rpc), block_number.parse::<i32>().unwrap(), webhook.to_string(), keep_on).await;
         if !optimize::this(format!("{}",rpc)).await {
             println!("{}", "The block number that you supplied is not valid".red());
             
@@ -90,8 +100,18 @@ async fn crawler(rpc: String, block_number: i32, webhook: String, keep_on: bool)
         }
     }
     else {
+        if block_number.to_string() == "latest"{
+            let block_number:i32 = block_fetch::latest_block(rpc.to_string()).await;
+            block_fetch::run(format!("{}",rpc),  block_number, webhook.to_string(), keep_on).await;
+            if !optimize::this(format!("{}",rpc)).await {
+                println!("{}", "The block number that you supplied is not valid".red());
+            }
     
-        block_fetch::run(format!("{}",rpc),  block_number, webhook, keep_on).await;
+            process::exit(1);
+        
+
+        }
+        block_fetch::run(format!("{}",rpc),  block_number.parse::<i32>().unwrap(), webhook.to_string(), keep_on).await;
         if !optimize::this(format!("{}",rpc)).await {
             println!("{}", "The block number that you supplied is not valid".red());
         }

@@ -23,3 +23,4 @@ simplelog = { version = "*", features = ["paris"] }
 log = "*"
 #rust-crypto = "0.2"
 throbber = "*"
+dirs = "4.0.0"
