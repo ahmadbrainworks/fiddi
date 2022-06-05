@@ -62,7 +62,7 @@ Fiddi is a command line tool that does the boring and complex process of checkin
 	body: 
 
 			
-				{"address": "0x096f7a3B544e62729a1FAD5c3882A1C65D1a9f72"}
+		`{"address": "0x096f7a3B544e62729a1FAD5c3882A1C65D1a9f72"}`
 			
 
 
