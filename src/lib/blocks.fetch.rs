@@ -31,6 +31,8 @@ if !Path::new(".fiddi/debug.log").exists() {
 
 
 env::set_var("CURRENT_BLOCK", hexblock_number);
+let home_dir = dirs::home_dir().unwrap();
+let home_dir = home_dir.display();
 CombinedLogger::init(
     vec![
         TermLogger::new(LevelFilter::Warn, Config::default(), TerminalMode::Mixed, ColorChoice::Auto),
@@ -38,7 +40,7 @@ CombinedLogger::init(
         OpenOptions::new()
         .write(true)
         .append(true)
-        .open("./.fiddi/debug.log")
+        .open(format!("{home_dir}/.fiddi/debug.log"))
         .unwrap()
     ),
     ]
@@ -116,7 +118,7 @@ let mut throbber = Throbber::new()
         .interval(Duration::from_millis(200));
 
     throbber.start();
-        throbber.change_message(format!("{} {:?}","optimizing system to reduce to maximum of 'latest block number'", latest_block(format!("{}",rpc.clone())).await));
+        throbber.change_message(format!("{} {:?} {}","optimizing block number to reduce to maximum of 'latest block number'(", latest_block(format!("{}",rpc.clone())).await, ")"));
         thread::sleep(Duration::from_millis(12000));
 }
 
