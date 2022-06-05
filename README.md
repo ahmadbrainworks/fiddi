@@ -57,7 +57,8 @@ Fiddi is a command line tool that does the boring and complex process of checkin
 	 This flag is boolean, specify it only when you want to use the adding wallet addresses to watchlist feature.
 	 `endpoint` for adding wallet address to the watchlist;
 	 `https://ip-address:port/api/new/address`
-          body: `{"address":"wallet addresses"}`
+          body: 
+         `{"address":"wallet addresses"}`
 
 
  
