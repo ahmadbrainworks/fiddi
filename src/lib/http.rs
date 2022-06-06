@@ -36,15 +36,17 @@ let tree = sled::open(format!("{home_dir}/.fiddi/wallet-addresses")).expect("Fai
 
     let obj = serde_json::from_slice::<Obj>(&body)?;
     let address = Arc::new(obj.address);
-    let exists = tree.contains_key(format!("{}", address.clone()).as_bytes()).unwrap();
+    let exists = tree.contains_key(format!("{}", address.clone()).to_lowercase().as_bytes()).unwrap();
 if !exists{
-    tree.insert(format!("{}", address.clone()), format!("{}", address.clone()).to_lowercase().as_bytes()).expect("can't do that");
+    tree.insert(format!("{}", address.clone().to_lowercase()), format!("{}", address.clone()).to_lowercase().as_bytes()).expect("can't do that");
+    drop(tree);
     let obj = json!({"status" : "0", "address": format!("{}", address.clone()), "msg": "address was successfully added to watchlist"});
     Ok(HttpResponse::Ok().json(obj)) // <- send response
 }else{
     return Err(error::ErrorBadRequest(json!({"status" : "0", "msg": "address was already added to the watchlist"})));
 
 }
+
     
 
 }

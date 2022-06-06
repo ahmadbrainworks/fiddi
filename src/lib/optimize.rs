@@ -23,6 +23,7 @@ let  json_string: String = format!("{}",res["result"]);
 let latest_block: i32 = i32::from_str_radix(&json_string.to_string().replace("0x", "").replace('"', ""), 16).unwrap();
 let local_block: i32 = i32::from_str_radix(current_block.trim_start_matches("0x"), 16).unwrap();
 
+
 return latest_block > local_block;
 
 }

@@ -23,10 +23,14 @@ let mut interval = time::interval(Duration::from_millis(1));
 let rpc = Arc::new(rpc);
 let hblock = format!("{:X}", block_number);
 let hexblock_number =&format!("0x{hblock}");
+let home_dir = dirs::home_dir().unwrap();
+let home_dir = home_dir.display();
 
-if !Path::new(".fiddi/debug.log").exists() {
-    fs::create_dir(".fiddi").unwrap();
-    File::create(".fiddi/debug.log").unwrap();
+if !Path::new(&format!("{home_dir}/.fiddi")).exists() {
+    fs::create_dir(&format!("{home_dir}/.fiddi")).unwrap();
+}
+if !Path::new(&format!("{home_dir}/.fiddi/debug.log")).exists() {
+    File::create(&format!("{home_dir}/.fiddi/debug.log")).unwrap();
 }
 
 
@@ -109,6 +113,7 @@ println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
    
     }
 }
+drop(tree);
 if !optimize::this(format!("{}",rpc.clone())).await {
     let next_block = format!("{:X}", latest_block(format!("{}",rpc.clone())).await);
     let hexblock_number =&format!("0x{next_block}");
@@ -128,6 +133,7 @@ let next_block = format!("{:X}", next_block);
 let hexblock_number =&format!("0x{next_block}");
     env::set_var("CURRENT_BLOCK", hexblock_number.to_string());
 }
+
 
 }
 
@@ -185,7 +191,6 @@ let exists = tree.contains_key(&format!("{}",data[i]["to"]).replace('"', "").as_
             .json::<serde_json::Value>() 
             .await
             .expect("failed to get payload");
-            
 info!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
 println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
             }
