@@ -10,13 +10,13 @@ use std::fs;
 use std::{thread};
 use throbber::Throbber;
 
-
 use simplelog::*;
 
 // #[macro_use] extern crate log;
 extern crate simplelog;
 #[path = "optimize.rs"]
 mod optimize;
+
 
 pub async fn run(rpc: String, block_number: i32, webhook: String, keep_on: bool) {
 let mut interval = time::interval(Duration::from_millis(1));
@@ -96,18 +96,14 @@ let exists = tree.contains_key(&format!("{}",data[i]["to"]).replace('"', "").as_
                 info!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
                 println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
             }else{
-            reqwest::Client::new()
-            .post(format!("{}",webhook))
-            .body(format!("{}",data[i]))
-            .send()
-            .await
-            .expect("failed to get response")
-            .json::<serde_json::Value>() 
-            .await
-            .expect("failed to get payload");
-            
-info!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
-println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
+                reqwest::Client::new()
+                .post(format!("{}",webhook))
+                .body(format!("{}",data[i]))
+                .send()
+                .await
+                .expect("failed to get payload");
+    info!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
+    println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
             }
         }
    
@@ -187,12 +183,10 @@ let exists = tree.contains_key(&format!("{}",data[i]["to"]).replace('"', "").as_
             .body(format!("{}",data[i]))
             .send()
             .await
-            .expect("failed to get response")
-            .json::<serde_json::Value>() 
-            .await
             .expect("failed to get payload");
 info!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
 println!("{} {}","incoming transaction to", format!("{}",data[i]["to"]));
+
             }
         }
    
